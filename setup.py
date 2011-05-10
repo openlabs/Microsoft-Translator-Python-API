@@ -26,10 +26,14 @@
     :copyright: © 2011 by Openlabs Technologies & Consulting (P) Limited
     :license: BSD, see LICENSE for more details.
 """
+import os
 from setuptools import setup
 
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 setup(
-    name = "MicrosoftTranslatorV2",
+    name = "microsofttranslator",
     version = "0.1",
     packages = [
         'microsofttranslator'
@@ -39,8 +43,18 @@ setup(
         },
     author = "Openlabs Technologies & Consulting (P) Limited",
     author_email = "info@openlabs.co.in",
-    description = __doc__,
+    description = "Microsoft Translator V2 - Python API",
+    long_description = read('README.rst'),
     license = "BSD",
     keywords = "translation microsoft",
-    url = "http://openlabs.co.in/"
+    url = "http://openlabs.co.in/",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD License",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
+        "Topic :: Software Development :: Internationalization",
+        "Topic :: Utilities"
+    ],
 )

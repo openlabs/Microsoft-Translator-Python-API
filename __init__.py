@@ -17,7 +17,18 @@ try:
 except ImportError:
     import json
 import urllib
-import codecs
+
+
+class ArgumentOutOfRangeException(Exception): 
+    def __init__(self, message):
+        self.message = message.replace('ArgumentOutOfRangeException: ', '')
+        super(ArgumentOutOfRangeException, self).__init__(self.message)
+
+
+class TranslateApiException(Exception):
+    def __init__(self, message):
+        self.message = message.replace('TranslateApiException: ', '')
+        super(TranslateApiException, self).__init__(self.message)
 
 
 class Translator(object):
@@ -38,7 +49,17 @@ class Translator(object):
         params['appId'] = self.app_id
         response = urllib.urlopen(
             "%s?%s" % (url, urllib.urlencode(params))).read()
-        return response.decode("UTF-8-sig")
+        rv =  json.loads(response.decode("UTF-8-sig"))
+
+        if isinstance(rv, basestring) and \
+                rv.startswith("ArgumentOutOfRangeException"):
+            raise ArgumentOutOfRangeException(rv)
+
+        if isinstance(rv, basestring) and \
+                rv.startswith("TranslateApiException"):
+            raise TranslateApiException(rv)
+
+        return rv
 
     def translate(self, text, to_lang, from_lang=None, 
             content_type='text/plain', category='general'):
@@ -106,8 +127,6 @@ class Translator(object):
         if from_lang is not None:
             params['from'] = from_lang
 
-        return json.loads(
-            self.call(
+        return self.call(
                 "http://api.microsofttranslator.com/V2/Ajax.svc/TranslateArray",
                 params)
-            )
