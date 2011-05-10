@@ -4,6 +4,7 @@ Microsoft Translator V2 -- Python API
 :Version: 0.1 
 :Web: http://openlabs.co.in/
 :keywords: Micrsoft Translator
+:copyright: Openlabs Technologies & Consulting (P) LTD
 
 This python API implements the Microsoft Translator services which can be used 
 in web or client applications to perform language translation operations. The 
@@ -20,4 +21,7 @@ Example Usage:
         >>> print translator.translate("Hello", "pt")
         "Olá"
 
+Bugs and Development on Github
+------------------------------
 
+https://github.com/openlabs/Microsoft-Translator-Python-API
