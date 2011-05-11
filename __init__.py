@@ -14,8 +14,12 @@ __all__ = ['Translator']
 
 try:
     import simplejson as json
+    from simplejson import JSONDecodeError
 except ImportError:
     import json
+    class JSONDecodeError(Exception): pass
+    # Ugly: No alternative because this exception class doesnt seem to be there
+    # in the standard python module
 import urllib
 
 

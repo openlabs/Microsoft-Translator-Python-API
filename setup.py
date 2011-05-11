@@ -34,7 +34,7 @@ def read(fname):
 
 setup(
     name = "microsofttranslator",
-    version = "0.2",
+    version = "0.3",
     packages = [
         'microsofttranslator'
         ],
