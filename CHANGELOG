@@ -1,0 +1,7 @@
+Changelog
+=========
+
+Version 0.3
+-----------
+ * Encode text as UTF-8 before sending to translator
+ * Improved JSON Error handling

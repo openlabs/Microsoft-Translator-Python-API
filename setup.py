@@ -8,7 +8,7 @@
     application, or those desiring to communicate with people of a different 
     language group.
 
-    This module implements the AJAX API for hte Microsoft Translator service.
+    This module implements the AJAX API for the Microsoft Translator service.
 
     An example::
 
