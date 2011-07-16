@@ -82,7 +82,7 @@ class Translator(object):
             supported category is "general".
         """
         params = {
-            'text': text,
+            'text': text.encode('utf8'),
             'to': to_lang,
             'contentType': content_type,
             'category': category,
