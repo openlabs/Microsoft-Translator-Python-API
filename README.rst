@@ -6,6 +6,10 @@ Microsoft Translator V2 -- Python API
 :keywords: Micrsoft Translator
 :copyright: Openlabs Technologies & Consulting (P) LTD
 
+.. image:: https://secure.travis-ci.org/openlabs/Microsoft-Translator-Python-API.png?branch=master
+   :target: http://travis-ci.org/#!/openlabs/Microsoft-Translator-Python-API
+
+
 This python API implements the Microsoft Translator services which can be used 
 in web or client applications to perform language translation operations. The 
 services support users who are not familiar with the default language of a page 
