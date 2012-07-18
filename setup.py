@@ -34,9 +34,9 @@ def read(fname):
 
 setup(
     name = "microsofttranslator",
-    version = "0.3",
+    version = "0.4",
     packages = [
-        'microsofttranslator'
+        'microsofttranslator',
         ],
     package_dir = {
         'microsofttranslator': '.'
@@ -58,4 +58,5 @@ setup(
         "Topic :: Software Development :: Internationalization",
         "Topic :: Utilities"
     ],
+    test_suite = "microsofttranslator.test.test_all",
 )

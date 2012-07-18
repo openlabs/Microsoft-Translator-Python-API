@@ -10,7 +10,7 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__all__ = ['Translator']
+__all__ = ['Translator', 'TranslateApiException']
 
 try:
     import simplejson as json
@@ -21,38 +21,111 @@ except ImportError:
     # Ugly: No alternative because this exception class doesnt seem to be there
     # in the standard python module
 import urllib
+import urllib2
+import warnings
+import logging
 
 
-class ArgumentOutOfRangeException(Exception): 
+class ArgumentOutOfRangeException(Exception):
     def __init__(self, message):
         self.message = message.replace('ArgumentOutOfRangeException: ', '')
         super(ArgumentOutOfRangeException, self).__init__(self.message)
 
 
 class TranslateApiException(Exception):
-    def __init__(self, message):
+    def __init__(self, message, *args):
         self.message = message.replace('TranslateApiException: ', '')
-        super(TranslateApiException, self).__init__(self.message)
+        super(TranslateApiException, self).__init__(self.message, *args)
 
 
 class Translator(object):
     """Implements AJAX API for the Microsoft Translator service
 
-    :param app_id: A string containing the Bing AppID.
+    :param app_id: A string containing the Bing AppID. (Deprecated)
     """
 
-    def __init__(self, app_id):
+    def __init__(self, client_id, client_secret,
+            scope="http://api.microsofttranslator.com",
+            grant_type="client_credentials", app_id=None, debug=False):
         """
-        :param app_id: A string containing the Bing AppID.
+
+
+        :param client_id: The client ID that you specified when you registered
+                          your application with Azure DataMarket.
+        :param client_secret: The client secret value that you obtained when
+                              you registered your application with Azure
+                              DataMarket.
+        :param scope: Defaults to http://api.microsofttranslator.com
+        ;param grant_type: Defaults to "client_credentials"
+        :param app_id: Deprecated
+        :param debug: If true, the logging level will be set to debug
+
+        .. versionchanged: 0.4
+            Bing AppID mechanism is deprecated and is no longer supported.
+            See: http://msdn.microsoft.com/en-us/library/hh454950
         """
-        self.app_id = app_id
+        if app_id is not None:
+            warnings.warn("""app_id is deprected since v0.4.
+            See: http://msdn.microsoft.com/en-us/library/hh454950
+            """, DeprecationWarning, stacklevel=2)
+
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.scope = scope
+        self.grant_type = grant_type
+        self.access_token = None
+        self.debug = debug
+        self.logger = logging.getLogger("microsofttranslator")
+        if self.debug:
+            self.logger.setLevel(level=logging.DEBUG)
+
+    def get_access_token(self):
+        """Bing AppID mechanism is deprecated and is no longer supported.
+        As mentioned above, you must obtain an access token to use the
+        Microsoft Translator API. The access token is more secure, OAuth
+        standard compliant, and more flexible. Users who are using Bing AppID
+        are strongly recommended to get an access token as soon as possible.
+
+        .. note::
+            The value of access token can be used for subsequent calls to the
+            Microsoft Translator API. The access token expires after 10
+            minutes. It is always better to check elapsed time between time at
+            which token issued and current time. If elapsed time exceeds 10
+            minute time period renew access token by following obtaining
+            access token procedure.
+
+        :return: The access token to be used with subsequent requests
+        """
+        args = urllib.urlencode({
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'scope': self.scope,
+            'grant_type': self.grant_type
+        })
+        response = json.loads(urllib.urlopen(
+            'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13', args
+        ).read())
+
+        self.logger.debug(response)
+
+        if "error" in response:
+            raise TranslateApiException(
+                response.get('error_description', 'No Error Description'),
+                response.get('error', 'Unknown Error')
+            )
+        return response['access_token']
 
     def call(self, url, params):
         """Calls the given url with the params urlencoded
         """
-        params['appId'] = self.app_id
-        response = urllib.urlopen(
-            "%s?%s" % (url, urllib.urlencode(params))).read()
+        if not self.access_token:
+            self.access_token = self.get_access_token()
+
+        request = urllib2.Request(
+            "%s?%s" % (url, urllib.urlencode(params)),
+            headers={'Authorization': 'Bearer %s' % self.access_token}
+        )
+        response = urllib2.urlopen(request).read()
         rv =  json.loads(response.decode("UTF-8-sig"))
 
         if isinstance(rv, basestring) and \
@@ -65,20 +138,20 @@ class Translator(object):
 
         return rv
 
-    def translate(self, text, to_lang, from_lang=None, 
+    def translate(self, text, to_lang, from_lang=None,
             content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
 
         :param text: A string representing the text to translate.
-        :param to_lang: A string representing the language code to 
+        :param to_lang: A string representing the language code to
             translate the text into.
-        :param from_lang: A string representing the language code of the 
-            translation text. If left None the response will include the 
+        :param from_lang: A string representing the language code of the
+            translation text. If left None the response will include the
             result of language auto-detection. (Default: None)
-        :param content_type: The format of the text being translated. 
-            The supported formats are "text/plain" and "text/html". Any HTML 
+        :param content_type: The format of the text being translated.
+            The supported formats are "text/plain" and "text/html". Any HTML
             needs to be well-formed.
-        :param category: The category of the text to translate. The only 
+        :param category: The category of the text to translate. The only
             supported category is "general".
         """
         params = {
