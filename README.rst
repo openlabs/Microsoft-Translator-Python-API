@@ -3,7 +3,7 @@ Microsoft Translator V2 -- Python API
 
 :Version: 0.4
 :Web: http://openlabs.co.in/
-:keywords: Micrsoft Translator
+:keywords: Microsoft Translator
 :copyright: Openlabs Technologies & Consulting (P) LTD
 
 .. image:: https://secure.travis-ci.org/openlabs/Microsoft-Translator-Python-API.png?branch=master
