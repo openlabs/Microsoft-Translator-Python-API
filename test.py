@@ -8,6 +8,7 @@
     :license: BSD, see LICENSE for more details.
 """
 import unittest
+import time
 from microsofttranslator import Translator, TranslateApiException
 
 client_id = "translaterpythonapi"
@@ -24,6 +25,12 @@ class TestTranslator(unittest.TestCase):
         client = Translator("foo", "bar")
         with self.assertRaises(TranslateApiException):
             client.translate("hello", "pt")
+
+    def test_token_timeout(self):
+        client = Translator(client_id, client_secret, debug=True)
+        self.assertEqual(client.translate("hello", "pt"), u'Ol\xe1')
+        time.sleep(610)
+        self.assertEqual(client.translate("hello", "pt"), u'Ol\xe1')
 
 def test_all():
     loader = unittest.TestLoader()
