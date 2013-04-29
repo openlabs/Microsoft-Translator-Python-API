@@ -24,7 +24,7 @@ import urllib
 import urllib2
 import warnings
 import logging
-
+import time
 
 class ArgumentOutOfRangeException(Exception):
     def __init__(self, message):
@@ -74,6 +74,7 @@ class Translator(object):
         self.scope = scope
         self.grant_type = grant_type
         self.access_token = None
+        self.token_creation_time = None
         self.debug = debug
         self.logger = logging.getLogger("microsofttranslator")
         if self.debug:
@@ -113,12 +114,13 @@ class Translator(object):
                 response.get('error_description', 'No Error Description'),
                 response.get('error', 'Unknown Error')
             )
+        self.token_creation_time = time.time()
         return response['access_token']
 
     def call(self, url, params):
         """Calls the given url with the params urlencoded
         """
-        if not self.access_token:
+        if not self.access_token or time.time() - self.token_creation_time > 570:
             self.access_token = self.get_access_token()
 
         request = urllib2.Request(
