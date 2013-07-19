@@ -12,16 +12,7 @@
 
 __all__ = ['Translator', 'TranslateApiException']
 
-try:
-    import simplejson as json
-    from simplejson import JSONDecodeError
-except ImportError:
-    import json
-    class JSONDecodeError(Exception): pass
-    # Ugly: No alternative because this exception class doesnt seem to be there
-    # in the standard python module
-import urllib
-import urllib2
+import requests
 import warnings
 import logging
 
@@ -96,15 +87,16 @@ class Translator(object):
 
         :return: The access token to be used with subsequent requests
         """
-        args = urllib.urlencode({
+        args = {
             'client_id': self.client_id,
             'client_secret': self.client_secret,
             'scope': self.scope,
             'grant_type': self.grant_type
-        })
-        response = json.loads(urllib.urlopen(
-            'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13', args
-        ).read())
+        }
+        response = requests.post(
+            'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13',
+            data=args
+        ).json()
 
         self.logger.debug(response)
 
@@ -121,18 +113,20 @@ class Translator(object):
         if not self.access_token:
             self.access_token = self.get_access_token()
 
-        request = urllib2.Request(
-            "%s?%s" % (url, urllib.urlencode(params)),
+        resp = requests.get(
+            "%s" % url,
+            params=params,
             headers={'Authorization': 'Bearer %s' % self.access_token}
         )
-        response = urllib2.urlopen(request).read()
-        rv =  json.loads(response.decode("UTF-8-sig"))
+        resp.encoding = 'UTF-8-sig'
+        rv = resp.json()
+        #rv = json.loads(response.decode("UTF-8-sig"))
 
-        if isinstance(rv, basestring) and \
+        if isinstance(rv, str) and \
                 rv.startswith("ArgumentOutOfRangeException"):
             raise ArgumentOutOfRangeException(rv)
 
-        if isinstance(rv, basestring) and \
+        if isinstance(rv, str) and \
                 rv.startswith("TranslateApiException"):
             raise TranslateApiException(rv)
 
@@ -170,23 +164,23 @@ class Translator(object):
         """Translates an array of text strings from one language to another.
 
         :param texts: A list containing texts for translation.
-        :param to_lang: A string representing the language code to 
+        :param to_lang: A string representing the language code to
             translate the text into.
-        :param from_lang: A string representing the language code of the 
-            translation text. If left None the response will include the 
+        :param from_lang: A string representing the language code of the
+            translation text. If left None the response will include the
             result of language auto-detection. (Default: None)
-        :param options: A TranslateOptions element containing the values below. 
+        :param options: A TranslateOptions element containing the values below.
             They are all optional and default to the most common settings.
 
-                Category: A string containing the category (domain) of the 
+                Category: A string containing the category (domain) of the
                     translation. Defaults to "general".
-                ContentType: The format of the text being translated. The 
-                    supported formats are "text/plain" and "text/html". Any 
+                ContentType: The format of the text being translated. The
+                    supported formats are "text/plain" and "text/html". Any
                     HTML needs to be well-formed.
-                Uri: A string containing the content location of this 
+                Uri: A string containing the content location of this
                     translation.
                 User: A string used to track the originator of the submission.
-                State: User state to help correlate request and response. The 
+                State: User state to help correlate request and response. The
                     same contents will be returned in the response.
         """
         options = {

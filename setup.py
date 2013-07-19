@@ -2,10 +2,10 @@
 """
     Microsoft translator API
 
-    The Microsoft Translator services can be used in web or client 
-    applications to perform language translation operations. The services 
-    support users who are not familiar with the default language of a page or 
-    application, or those desiring to communicate with people of a different 
+    The Microsoft Translator services can be used in web or client
+    applications to perform language translation operations. The services
+    support users who are not familiar with the default language of a page or
+    application, or those desiring to communicate with people of a different
     language group.
 
     This module implements the AJAX API for the Microsoft Translator service.
@@ -17,7 +17,7 @@
         >>> print translator.translate("Hello", "pt")
         "Olá"
 
-    The documentation for the service can be obtained here: 
+    The documentation for the service can be obtained here:
     http://msdn.microsoft.com/en-us/library/ff512423.aspx
 
     The project is hosted on GitHub where your could fork the project or report
@@ -59,4 +59,7 @@ setup(
         "Topic :: Utilities"
     ],
     test_suite = "microsofttranslator.test.test_all",
+    install_requires=[
+        'requests >= 1.2.3',
+    ]
 )
