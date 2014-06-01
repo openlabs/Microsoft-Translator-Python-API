@@ -2,10 +2,10 @@
 """
     Microsoft translator API
 
-    The Microsoft Translator services can be used in web or client 
-    applications to perform language translation operations. The services 
-    support users who are not familiar with the default language of a page or 
-    application, or those desiring to communicate with people of a different 
+    The Microsoft Translator services can be used in web or client
+    applications to perform language translation operations. The services
+    support users who are not familiar with the default language of a page or
+    application, or those desiring to communicate with people of a different
     language group.
 
     This module implements the AJAX API for the Microsoft Translator service.
@@ -17,7 +17,7 @@
         >>> print translator.translate("Hello", "pt")
         "Olá"
 
-    The documentation for the service can be obtained here: 
+    The documentation for the service can be obtained here:
     http://msdn.microsoft.com/en-us/library/ff512423.aspx
 
     The project is hosted on GitHub where your could fork the project or report
@@ -29,26 +29,27 @@
 import os
 from setuptools import setup
 
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name = "microsofttranslator",
-    version = "0.4",
-    packages = [
+    name="microsofttranslator",
+    version="0.4",
+    packages=[
         'microsofttranslator',
-        ],
-    package_dir = {
+    ],
+    package_dir={
         'microsofttranslator': '.'
-        },
-    author = "Openlabs Technologies & Consulting (P) Limited",
-    author_email = "info@openlabs.co.in",
-    description = "Microsoft Translator V2 - Python API",
-    long_description = read('README.rst'),
-    license = "BSD",
-    keywords = "translation microsoft",
-    url = "http://openlabs.co.in/",
-    include_package_data = True,
+    },
+    author="Openlabs Technologies & Consulting (P) Limited",
+    author_email="info@openlabs.co.in",
+    description="Microsoft Translator V2 - Python API",
+    long_description=read('README.rst'),
+    license="BSD",
+    keywords="translation microsoft",
+    url="http://openlabs.co.in/",
+    include_package_data=True,
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -58,5 +59,5 @@ setup(
         "Topic :: Software Development :: Internationalization",
         "Topic :: Utilities"
     ],
-    test_suite = "microsofttranslator.test.test_all",
+    test_suite="microsofttranslator.test.test_all",
 )

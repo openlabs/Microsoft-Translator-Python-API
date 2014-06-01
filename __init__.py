@@ -17,7 +17,9 @@ try:
     from simplejson import JSONDecodeError
 except ImportError:
     import json
-    class JSONDecodeError(Exception): pass
+
+    class JSONDecodeError(Exception):
+        pass
     # Ugly: No alternative because this exception class doesnt seem to be there
     # in the standard python module
 import urllib
@@ -126,7 +128,7 @@ class Translator(object):
             headers={'Authorization': 'Bearer %s' % self.access_token}
         )
         response = urllib2.urlopen(request).read()
-        rv =  json.loads(response.decode("UTF-8-sig"))
+        rv = json.loads(response.decode("UTF-8-sig"))
 
         if isinstance(rv, basestring) and \
                 rv.startswith("ArgumentOutOfRangeException"):
@@ -159,7 +161,7 @@ class Translator(object):
             'to': to_lang,
             'contentType': content_type,
             'category': category,
-            }
+        }
         if from_lang is not None:
             params['from'] = from_lang
         return self.call(
@@ -170,23 +172,23 @@ class Translator(object):
         """Translates an array of text strings from one language to another.
 
         :param texts: A list containing texts for translation.
-        :param to_lang: A string representing the language code to 
+        :param to_lang: A string representing the language code to
             translate the text into.
-        :param from_lang: A string representing the language code of the 
-            translation text. If left None the response will include the 
+        :param from_lang: A string representing the language code of the
+            translation text. If left None the response will include the
             result of language auto-detection. (Default: None)
-        :param options: A TranslateOptions element containing the values below. 
+        :param options: A TranslateOptions element containing the values below.
             They are all optional and default to the most common settings.
 
-                Category: A string containing the category (domain) of the 
+                Category: A string containing the category (domain) of the
                     translation. Defaults to "general".
-                ContentType: The format of the text being translated. The 
-                    supported formats are "text/plain" and "text/html". Any 
+                ContentType: The format of the text being translated. The
+                    supported formats are "text/plain" and "text/html". Any
                     HTML needs to be well-formed.
-                Uri: A string containing the content location of this 
+                Uri: A string containing the content location of this
                     translation.
                 User: A string used to track the originator of the submission.
-                State: User state to help correlate request and response. The 
+                State: User state to help correlate request and response. The
                     same contents will be returned in the response.
         """
         options = {
@@ -195,12 +197,12 @@ class Translator(object):
             'Uri': '',
             'User': 'default',
             'State': ''
-            }.update(options)
+        }.update(options)
         params = {
             'texts': json.dumps(texts),
             'to': to_lang,
             'options': json.dumps(options),
-            }
+        }
         if from_lang is not None:
             params['from'] = from_lang
 
