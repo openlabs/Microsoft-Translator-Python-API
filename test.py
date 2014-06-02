@@ -25,6 +25,7 @@ class TestTranslator(unittest.TestCase):
         with self.assertRaises(TranslateApiException):
             client.translate("hello", "pt")
 
+
 def test_all():
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()

@@ -9,6 +9,9 @@ Microsoft Translator V2 -- Python API
 .. image:: https://secure.travis-ci.org/openlabs/Microsoft-Translator-Python-API.png?branch=master
    :target: http://travis-ci.org/#!/openlabs/Microsoft-Translator-Python-API
 
+.. image:: https://coveralls.io/repos/openlabs/Microsoft-Translator-Python-API/badge.png
+  :target: https://coveralls.io/r/openlabs/Microsoft-Translator-Python-API
+
 
 This python API implements the Microsoft Translator services which can be used 
 in web or client applications to perform language translation operations. The 
