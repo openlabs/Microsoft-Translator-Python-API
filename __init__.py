@@ -14,16 +14,10 @@ __all__ = ['Translator', 'TranslateApiException']
 
 try:
     import simplejson as json
-    from simplejson import JSONDecodeError
 except ImportError:
     import json
 
-    class JSONDecodeError(Exception):
-        pass
-    # Ugly: No alternative because this exception class doesnt seem to be there
-    # in the standard python module
-import urllib
-import urllib2
+import requests
 import warnings
 import logging
 
@@ -98,15 +92,16 @@ class Translator(object):
 
         :return: The access token to be used with subsequent requests
         """
-        args = urllib.urlencode({
+        args = {
             'client_id': self.client_id,
             'client_secret': self.client_secret,
             'scope': self.scope,
             'grant_type': self.grant_type
-        })
-        response = json.loads(urllib.urlopen(
-            'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13', args
-        ).read())
+        }
+        response = requests.post(
+            'https://datamarket.accesscontrol.windows.net/v2/OAuth2-13',
+            data=args
+        ).json()
 
         self.logger.debug(response)
 
@@ -123,18 +118,19 @@ class Translator(object):
         if not self.access_token:
             self.access_token = self.get_access_token()
 
-        request = urllib2.Request(
-            "%s?%s" % (url, urllib.urlencode(params)),
+        resp = requests.get(
+            "%s" % url,
+            params=params,
             headers={'Authorization': 'Bearer %s' % self.access_token}
         )
-        response = urllib2.urlopen(request).read()
-        rv = json.loads(response.decode("UTF-8-sig"))
+        resp.encoding = 'UTF-8-sig'
+        rv = resp.json()
 
-        if isinstance(rv, basestring) and \
+        if isinstance(rv, str) and \
                 rv.startswith("ArgumentOutOfRangeException"):
             raise ArgumentOutOfRangeException(rv)
 
-        if isinstance(rv, basestring) and \
+        if isinstance(rv, str) and \
                 rv.startswith("TranslateApiException"):
             raise TranslateApiException(rv)
 
