@@ -1,15 +1,16 @@
 Microsoft Translator V2 -- Python API
 =====================================
 
-:Version: 0.4
+:Version: 0.5
 :Web: http://openlabs.co.in/
 :keywords: Microsoft Translator
 :copyright: Openlabs Technologies & Consulting (P) LTD
+:license: BSD
 
 .. image:: https://secure.travis-ci.org/openlabs/Microsoft-Translator-Python-API.png?branch=master
    :target: http://travis-ci.org/#!/openlabs/Microsoft-Translator-Python-API
 
-.. image:: https://coveralls.io/repos/openlabs/Microsoft-Translator-Python-API/badge.png
+.. image:: https://coveralls.io/repos/openlabs/Microsoft-Translator-Python-API/badge.png?branch=master
   :target: https://coveralls.io/r/openlabs/Microsoft-Translator-Python-API
 
 
