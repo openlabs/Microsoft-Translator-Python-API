@@ -26,11 +26,11 @@ class TestTranslator(unittest.TestCase):
         with self.assertRaises(TranslateApiException):
             client.translate("hello", "pt")
 
-    def test_token_timeout(self):
-        client = Translator(client_id, client_secret, debug=True)
-        self.assertEqual(client.translate("hello", "pt"), u'Ol\xe1')
-        time.sleep(610)
-        self.assertEqual(client.translate("hello", "pt"), u'Ol\xe1')
+#    def test_token_timeout(self):
+#        client = Translator(client_id, client_secret, debug=True)
+#        self.assertEqual(client.translate("hello", "pt"), u'Ol\xe1')
+#        time.sleep(610)
+#        self.assertEqual(client.translate("hello", "pt"), u'Ol\xe1')
 
 def test_all():
     loader = unittest.TestLoader()
