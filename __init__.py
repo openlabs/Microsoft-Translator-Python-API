@@ -134,6 +134,11 @@ class Translator(object):
                 rv.startswith("TranslateApiException"):
             raise TranslateApiException(rv)
 
+        if isinstance(rv, str) and \
+                rv.startswith(("ArgumentException: "
+                               "The incoming token has expired")):
+            self.access_token = None
+            return self.call(url, params)
         return rv
 
     def translate(self, text, to_lang, from_lang=None,
