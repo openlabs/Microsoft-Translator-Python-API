@@ -1,7 +1,7 @@
 Microsoft Translator V2 -- Python API
 =====================================
 
-:Version: 0.5
+:Version: 0.6
 :Web: http://openlabs.co.in/
 :keywords: Microsoft Translator
 :copyright: Openlabs Technologies & Consulting (P) LTD

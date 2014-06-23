@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 0.6
+-----------
+ * Handle token expiry (Thanks to @ScreenDriver)
+
 Version 0.4
 -----------
  * Updated to use the Oauth based token issued by Bing
