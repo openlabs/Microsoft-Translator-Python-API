@@ -126,15 +126,15 @@ class Translator(object):
         resp.encoding = 'UTF-8-sig'
         rv = resp.json()
 
-        if isinstance(rv, str) and \
+        if isinstance(rv, (str, unicode)) and \
                 rv.startswith("ArgumentOutOfRangeException"):
             raise ArgumentOutOfRangeException(rv)
 
-        if isinstance(rv, str) and \
+        if isinstance(rv, (str, unicode)) and \
                 rv.startswith("TranslateApiException"):
             raise TranslateApiException(rv)
 
-        if isinstance(rv, str) and \
+        if isinstance(rv, (str, unicode)) and \
                 rv.startswith(("ArgumentException: "
                                "The incoming token has expired")):
             self.access_token = None
