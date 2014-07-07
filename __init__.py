@@ -18,6 +18,7 @@ except ImportError:
     import json
 
 import requests
+import six
 import warnings
 import logging
 
@@ -126,15 +127,15 @@ class Translator(object):
         resp.encoding = 'UTF-8-sig'
         rv = resp.json()
 
-        if isinstance(rv, (str, unicode)) and \
+        if isinstance(rv, six.string_types) and \
                 rv.startswith("ArgumentOutOfRangeException"):
             raise ArgumentOutOfRangeException(rv)
 
-        if isinstance(rv, (str, unicode)) and \
+        if isinstance(rv, six.string_types) and \
                 rv.startswith("TranslateApiException"):
             raise TranslateApiException(rv)
 
-        if isinstance(rv, (str, unicode)) and \
+        if isinstance(rv, six.string_types) and \
                 rv.startswith(("ArgumentException: "
                                "The incoming token has expired")):
             self.access_token = None
