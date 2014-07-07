@@ -64,5 +64,6 @@ setup(
     test_suite="microsofttranslator.test.test_all",
     install_requires=[
         'requests >= 1.2.3',
+        'six',
     ]
 )
