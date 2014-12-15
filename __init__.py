@@ -150,7 +150,8 @@ class Translator(object):
         if not self.access_token:
             self.access_token = self.get_access_token()
 
-        url = 'http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate' 
+        url = 'http://api.microsofttranslator.com/V2/Http.svc' +
+            '/GetLanguagesForTranslate' 
         response = requests.get(url,
             headers={'Authorization': 'Bearer %s' % self.access_token})
         response.encoding = 'UTF-8-sig'
@@ -174,7 +175,7 @@ class Translator(object):
 
         response = requests.get(
             'http://api.microsofttranslator.com/V2/Ajax.svc/Detect',
-            params = {'text': text},
+            params={'text': text},
             headers={'Authorization': 'Bearer %s' % self.access_token})
         response.encoding = 'UTF-8-sig'
 
