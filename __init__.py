@@ -22,6 +22,7 @@ import six
 import warnings
 import logging
 
+from xml.dom import minidom
 
 class ArgumentOutOfRangeException(Exception):
     def __init__(self, message):
@@ -142,6 +143,45 @@ class Translator(object):
             return self.call(url, params)
         return rv
 
+    def get_languages(self):
+        """Fetches the languages supported by Microsoft Translator
+           Returns list of languages
+        """
+        if not self.access_token:
+            self.access_token = self.get_access_token()
+
+        response = requests.get(
+            'http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate',
+            headers={'Authorization': 'Bearer %s' % self.access_token})
+        response.encoding = 'UTF-8-sig'
+
+        languages = []
+        xml = minidom.parseString(response.text)
+        array = xml.firstChild
+        for childNode in array.childNodes:
+            languages.append(childNode.firstChild.nodeValue)
+            
+        [language.decode('UTF-8') for language in languages]
+
+        return languages
+
+    def detect_language(self, text):
+        """Detects language of given string
+           Returns two letter language - Example : fr
+        """
+        if not self.access_token:
+            self.access_token = self.get_access_token()
+
+        response = requests.get(
+            'http://api.microsofttranslator.com/V2/Ajax.svc/Detect',
+            params = {'text' : text},
+            headers={'Authorization': 'Bearer %s' % self.access_token})
+        response.encoding = 'UTF-8-sig'
+
+        language = response.text.split('\n')
+        language = [l for l in language if l is not None]
+        return language[0].encode('UTF-8')[1:-1]
+
     def translate(self, text, to_lang, from_lang=None,
             content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
@@ -159,7 +199,7 @@ class Translator(object):
             supported category is "general".
         """
         params = {
-            'text': text.encode('utf8'),
+            'text': text.encode('UTF-8'),
             'to': to_lang,
             'contentType': content_type,
             'category': category,

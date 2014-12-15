@@ -25,6 +25,14 @@ class TestTranslator(unittest.TestCase):
         with self.assertRaises(TranslateApiException):
             client.translate("hello", "pt")
 
+    def test_get_languages(self):
+        languages = [u'ar', u'bg', u'ca', u'zh-CHS', u'zh-CHT', u'cs', u'da', u'nl', u'en', u'et', u'fi', u'fr', u'de', u'el', u'ht', u'he', u'hi', u'mww', u'hu', u'id', u'it', u'ja', u'tlh', u'tlh-Qaak', u'ko', u'lv', u'lt', u'ms', u'mt', u'no', u'fa', u'pl', u'pt', u'ro', u'ru', u'sk', u'sl', u'es', u'sv', u'th', u'tr', u'uk', u'ur', u'vi', u'cy']
+        client = Translator(client_id, client_secret, debug=True)
+        self.assertEqual(client.get_languages(), languages)
+
+    def test_detect_language(self):
+        client = Translator(client_id, client_secret, debug=True)
+        self.assertEqual(client.detect_language('hello'), 'en')        
 
 def test_all():
     loader = unittest.TestLoader()
