@@ -24,6 +24,7 @@ import logging
 
 from xml.dom import minidom
 
+
 class ArgumentOutOfRangeException(Exception):
     def __init__(self, message):
         self.message = message.replace('ArgumentOutOfRangeException: ', '')
@@ -151,7 +152,7 @@ class Translator(object):
             self.access_token = self.get_access_token()
 
         url = 'http://api.microsofttranslator.com/V2/Http.svc' +
-            '/GetLanguagesForTranslate' 
+        '/GetLanguagesForTranslate'
         response = requests.get(url,
             headers={'Authorization': 'Bearer %s' % self.access_token})
         response.encoding = 'UTF-8-sig'
