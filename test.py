@@ -31,9 +31,7 @@ class TestTranslator(unittest.TestCase):
         client = Translator(client_id, client_secret, debug=True)
         languages = client.get_languages()
         self.assertEqual(type(languages), list)
-        self.assertEqual(
-            set(default_languages).issubset(set(languages)),
-            True)
+        self.assertTrue(set(default_languages).issubset(set(languages)))
 
     def test_detect_language(self):
         client = Translator(client_id, client_secret, debug=True)
