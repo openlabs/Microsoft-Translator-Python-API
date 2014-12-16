@@ -126,6 +126,7 @@ class Translator(object):
             params=params,
             headers={'Authorization': 'Bearer %s' % self.access_token}
         )
+
         resp.encoding = 'UTF-8-sig'
         rv = resp.json()
 
@@ -151,21 +152,13 @@ class Translator(object):
         if not self.access_token:
             self.access_token = self.get_access_token()
 
-        url = 'http://api.microsofttranslator.com/V2/Http.svc' +
-        '/GetLanguagesForTranslate'
-        response = requests.get(url,
-            headers={'Authorization': 'Bearer %s' % self.access_token})
-        response.encoding = 'UTF-8-sig'
+        url = 'http://api.microsofttranslator.com/V2/Ajax.svc/'
+        url = url + 'GetLanguagesForTranslate'
+        params = ''
 
-        languages = []
-        xml = minidom.parseString(response.text)
-        array = xml.firstChild
-        for childNode in array.childNodes:
-            languages.append(childNode.firstChild.nodeValue)
-
-        [language.decode('UTF-8') for language in languages]
-
-        return languages
+        return self.call(
+            url,
+            params)
 
     def detect_language(self, text):
         """Detects language of given string
@@ -174,16 +167,14 @@ class Translator(object):
         if not self.access_token:
             self.access_token = self.get_access_token()
 
-        response = requests.get(
+        params = {
+            'text': text.encode('UTF-8')
+        }
+
+        return self.call(
             'http://api.microsofttranslator.com/V2/Ajax.svc/Detect',
-            params={'text': text},
-            headers={'Authorization': 'Bearer %s' % self.access_token})
-        response.encoding = 'UTF-8-sig'
-
-        language = response.text.split('\n')
-        language = [l for l in language if l is not None]
-        return language[0].encode('UTF-8')[1:-1]
-
+            params)
+        
     def translate(self, text, to_lang, from_lang=None,
             content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
