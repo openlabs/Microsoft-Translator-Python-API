@@ -26,12 +26,8 @@
     :copyright: © 2011 by Openlabs Technologies & Consulting (P) Limited
     :license: BSD, see LICENSE for more details.
 """
-import os
 from setuptools import setup
 
-
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name="microsofttranslator",
@@ -45,7 +41,7 @@ setup(
     author="Openlabs Technologies & Consulting (P) Limited",
     author_email="info@openlabs.co.in",
     description="Microsoft Translator V2 - Python API",
-    long_description=read('README.rst'),
+    long_description=open('README.rst').read(),
     license="BSD",
     keywords="translation microsoft",
     url="http://openlabs.co.in/",
