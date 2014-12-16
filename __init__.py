@@ -42,8 +42,8 @@ class Translator(object):
     """
 
     def __init__(self, client_id, client_secret,
-            scope="http://api.microsofttranslator.com",
-            grant_type="client_credentials", app_id=None, debug=False):
+                 scope="http://api.microsofttranslator.com",
+                 grant_type="client_credentials", app_id=None, debug=False):
         """
 
 
@@ -71,6 +71,7 @@ class Translator(object):
         self.scope = scope
         self.grant_type = grant_type
         self.access_token = None
+        self.ajax_url = 'http://api.microsofttranslator.com/V2/Ajax.svc/'
         self.debug = debug
         self.logger = logging.getLogger("microsofttranslator")
         if self.debug:
@@ -120,10 +121,11 @@ class Translator(object):
             self.access_token = self.get_access_token()
 
         resp = requests.get(
-            "%s" % url,
+            "%s" % self.ajax_url + url,
             params=params,
             headers={'Authorization': 'Bearer %s' % self.access_token}
         )
+
         resp.encoding = 'UTF-8-sig'
         rv = resp.json()
 
@@ -142,8 +144,36 @@ class Translator(object):
             return self.call(url, params)
         return rv
 
+    def get_languages(self):
+        """Fetches the languages supported by Microsoft Translator
+           Returns list of languages
+        """
+        if not self.access_token:
+            self.access_token = self.get_access_token()
+
+        params = ''
+
+        return self.call(
+            '/GetLanguagesForTranslate',
+            params)
+
+    def detect_language(self, text):
+        """Detects language of given string
+           Returns two letter language - Example : fr
+        """
+        if not self.access_token:
+            self.access_token = self.get_access_token()
+
+        params = {
+            'text': text.encode('utf8')
+        }
+
+        return self.call(
+            '/Detect',
+            params)
+
     def translate(self, text, to_lang, from_lang=None,
-            content_type='text/plain', category='general'):
+                  content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
 
         :param text: A string representing the text to translate.
@@ -167,7 +197,7 @@ class Translator(object):
         if from_lang is not None:
             params['from'] = from_lang
         return self.call(
-            "http://api.microsofttranslator.com/V2/Ajax.svc/Translate",
+            "/Translate",
             params)
 
     def translate_array(self, texts, to_lang, from_lang=None, **options):
@@ -209,5 +239,5 @@ class Translator(object):
             params['from'] = from_lang
 
         return self.call(
-                "http://api.microsofttranslator.com/V2/Ajax.svc/TranslateArray",
-                params)
+            "/TranslateArray",
+            params)
