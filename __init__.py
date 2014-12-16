@@ -22,8 +22,6 @@ import six
 import warnings
 import logging
 
-from xml.dom import minidom
-
 
 class ArgumentOutOfRangeException(Exception):
     def __init__(self, message):
@@ -174,7 +172,7 @@ class Translator(object):
         return self.call(
             'http://api.microsofttranslator.com/V2/Ajax.svc/Detect',
             params)
-        
+
     def translate(self, text, to_lang, from_lang=None,
             content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
