@@ -41,7 +41,10 @@ class Translator(object):
     :param app_id: A string containing the Bing AppID. (Deprecated)
     """
 
-    def __init__(self, client_id, client_secret,
+    base_url = "http://api.microsofttranslator.com/V2/Ajax.svc"
+
+    def __init__(
+            self, client_id, client_secret,
             scope="http://api.microsofttranslator.com",
             grant_type="client_credentials", app_id=None, debug=False):
         """
@@ -113,14 +116,17 @@ class Translator(object):
             )
         return response['access_token']
 
-    def call(self, url, params):
-        """Calls the given url with the params urlencoded
+    def call(self, path, params):
+        """Calls the given path with the params urlencoded
+
+        :param path: The path of the API call being made
+        :param params: The parameters dictionary
         """
         if not self.access_token:
             self.access_token = self.get_access_token()
 
         resp = requests.get(
-            "%s" % url,
+            "/".join([self.base_url, path]),
             params=params,
             headers={'Authorization': 'Bearer %s' % self.access_token}
         )
@@ -139,10 +145,11 @@ class Translator(object):
                 rv.startswith(("ArgumentException: "
                                "The incoming token has expired")):
             self.access_token = None
-            return self.call(url, params)
+            return self.call(path, params)
         return rv
 
-    def translate(self, text, to_lang, from_lang=None,
+    def translate(
+            self, text, to_lang, from_lang=None,
             content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
 
@@ -166,9 +173,7 @@ class Translator(object):
         }
         if from_lang is not None:
             params['from'] = from_lang
-        return self.call(
-            "http://api.microsofttranslator.com/V2/Ajax.svc/Translate",
-            params)
+        return self.call("Translate", params)
 
     def translate_array(self, texts, to_lang, from_lang=None, **options):
         """Translates an array of text strings from one language to another.
@@ -208,6 +213,4 @@ class Translator(object):
         if from_lang is not None:
             params['from'] = from_lang
 
-        return self.call(
-                "http://api.microsofttranslator.com/V2/Ajax.svc/TranslateArray",
-                params)
+        return self.call("TranslateArray", params)
