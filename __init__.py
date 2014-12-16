@@ -214,3 +214,18 @@ class Translator(object):
             params['from'] = from_lang
 
         return self.call("TranslateArray", params)
+
+    def get_languages(self):
+        """Fetches the languages supported by Microsoft Translator
+           Returns list of languages
+        """
+        return self.call('GetLanguagesForTranslate', '')
+
+    def detect_language(self, text):
+        """Detects language of given string
+           Returns two letter language - Example : fr
+        """
+        params = {
+            'text': text.encode('utf8')
+        }
+        return self.call('Detect', params)
