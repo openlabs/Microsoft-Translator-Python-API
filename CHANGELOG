@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.7
+-----------
+ * Add support for language detection and finding supported languages (Thanks
+   to Karthik Balakrishnan)
+
 Version 0.6
 -----------
  * Handle token expiry (Thanks to @ScreenDriver)
