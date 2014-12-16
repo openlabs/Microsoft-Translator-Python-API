@@ -151,6 +151,8 @@ class Translator(object):
         if not self.access_token:
             self.access_token = self.get_access_token()
 
+        params = ''
+
         return self.call(
             '/GetLanguagesForTranslate',
             params)
