@@ -43,7 +43,8 @@ class Translator(object):
 
     base_url = "http://api.microsofttranslator.com/V2/Ajax.svc"
 
-    def __init__(self, client_id, client_secret,
+    def __init__(
+            self, client_id, client_secret,
             scope="http://api.microsofttranslator.com",
             grant_type="client_credentials", app_id=None, debug=False):
         """
@@ -147,7 +148,8 @@ class Translator(object):
             return self.call(path, params)
         return rv
 
-    def translate(self, text, to_lang, from_lang=None,
+    def translate(
+            self, text, to_lang, from_lang=None,
             content_type='text/plain', category='general'):
         """Translates a text string from one language to another.
 
