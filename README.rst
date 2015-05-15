@@ -63,7 +63,7 @@ Translate multiple words at once
 
         >>> from microsofttranslator import Translator
         >>> translator = Translator('<Your Client ID>', '<Your Client Secret>')
-        >>> client.translate_array(['apple', 'orange'], 'pt')
+        >>> translator.translate_array(['apple', 'orange'], 'pt')
         [{u'TranslatedText': u'Apple', u'From': u'en', u'OriginalTextSentenceLengths': [5], u'TranslatedTextSentenceLengths': [5]}, {u'TranslatedText': u'laranja', u'From': u'en', u'OriginalTextSentenceLengths': [6], u'TranslatedTextSentenceLengths': [7]}]
 
 Get supported languages
@@ -73,7 +73,7 @@ Get supported languages
 
         >>> from microsofttranslator import Translator
         >>> translator = Translator('<Your Client ID>', '<Your Client Secret>')
-        >>> print client.get_languages()
+        >>> print translator.get_languages()
         [u'ar', u'bg', u'ca', u'zh-CHS', u'zh-CHT', u'cs', u'da', u'nl', u'en', u'et', u'fi', u'fr', u'de', u'el', u'ht', u'he', u'hi', u'mww', u'hu', u'id', u'it', u'ja', u'tlh', u'tlh-Qaak', u'ko', u'lv', u'lt', u'ms', u'mt', u'no', u'fa', u'pl', u'pt', u'ro', u'ru', u'sk', u'sl', u'es', u'sv', u'th', u'tr', u'uk', u'ur', u'vi', u'cy']
 
 Detect Language
@@ -83,7 +83,7 @@ Detect Language
 
         >>> from microsofttranslator import Translator
         >>> translator = Translator('<Your Client ID>', '<Your Client Secret>')
-        >>> client.detect_language('hello')
+        >>> translator.detect_language('hello')
         u'en'
 
 
