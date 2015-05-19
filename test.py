@@ -7,11 +7,12 @@
     :copyright: (c) 2012 by Openlabs Technologies & Consulting (P) Limited
     :license: BSD, see LICENSE for more details.
 """
+import os
 import unittest
 from microsofttranslator import Translator, TranslateApiException
 
-client_id = "translaterpythonapi"
-client_secret = "FLghnwW4LJmNgEG+EZkL8uE+wb7+6tkOS8eejHg3AaI="
+client_id = os.environ['CLIENT_ID']
+client_secret = os.environ['CLIENT_SECRET']
 
 default_languages = [u'en', u'fr', u'de']
 
