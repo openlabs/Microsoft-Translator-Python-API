@@ -43,6 +43,14 @@ optional.
 
 Take a note of the client ID and the client secret value.
 
+Installing
+----------
+
+::
+
+      pip install microsofttranslator
+
+
 Features
 --------
 
