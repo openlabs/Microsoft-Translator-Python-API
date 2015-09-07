@@ -26,6 +26,7 @@
     :copyright: © 2011 by Openlabs Technologies & Consulting (P) Limited
     :license: BSD, see LICENSE for more details.
 """
+import codecs
 from setuptools import setup
 
 
@@ -41,7 +42,9 @@ setup(
     author="Openlabs Technologies & Consulting (P) Limited",
     author_email="info@openlabs.co.in",
     description="Microsoft Translator V2 - Python API",
-    long_description=open('README.rst').read(),
+    long_description=codecs.open(
+        'README.rst', encoding='UTF-8'
+    ).read(),
     license="BSD",
     keywords="translation microsoft",
     url="http://openlabs.co.in/",
