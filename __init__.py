@@ -214,6 +214,47 @@ class Translator(object):
             params['from'] = from_lang
 
         return self.call("TranslateArray", params)
+        
+    def translate_array_alignment(self, texts, to_lang, from_lang=None, **options):
+        """Works just like regular TranslateArray(), except it has an additional 
+        element in the response structure, called "Alignment".
+
+        :param texts: A list containing texts for translation.
+        :param to_lang: A string representing the language code to
+            translate the text into.
+        :param from_lang: A string representing the language code of the
+            translation text. If left None the response will include the
+            result of language auto-detection. (Default: None)
+        :param options: A TranslateOptions element containing the values below.
+            They are all optional and default to the most common settings.
+
+                Category: A string containing the category (domain) of the
+                    translation. Defaults to "general".
+                ContentType: The format of the text being translated. The
+                    supported formats are "text/plain" and "text/html". Any
+                    HTML needs to be well-formed.
+                Uri: A string containing the content location of this
+                    translation.
+                User: A string used to track the originator of the submission.
+                State: User state to help correlate request and response. The
+                    same contents will be returned in the response.
+        """
+        options = {
+            'Category': "general",
+            'Contenttype': "text/plain",
+            'Uri': '',
+            'User': 'default',
+            'State': ''
+        }.update(options)
+        params = {
+            'texts': json.dumps(texts),
+            'to': to_lang,
+            'options': json.dumps(options),
+        }
+        if from_lang is not None:
+            params['from'] = from_lang
+
+        return self.call("TranslateArray2", params)
 
     def get_languages(self):
         """Fetches the languages supported by Microsoft Translator
