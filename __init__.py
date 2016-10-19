@@ -198,17 +198,18 @@ class Translator(object):
                 State: User state to help correlate request and response. The
                     same contents will be returned in the response.
         """
-        options = {
+        opts = {
             'Category': "general",
             'Contenttype': "text/plain",
             'Uri': '',
             'User': 'default',
             'State': ''
-        }.update(options)
+        }
+        opts.update(options)
         params = {
             'texts': json.dumps(texts),
             'to': to_lang,
-            'options': json.dumps(options),
+            'options': json.dumps(opts),
         }
         if from_lang is not None:
             params['from'] = from_lang
