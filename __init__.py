@@ -17,10 +17,10 @@ try:
 except ImportError:
     import json
 
-import requests
-import six
-import warnings
-import logging
+import requests     # noqa: E402
+import six          # noqa: E402
+import warnings     # noqa: E402
+import logging      # noqa: E402
 
 
 class ArgumentOutOfRangeException(Exception):
