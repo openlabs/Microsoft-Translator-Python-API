@@ -2,7 +2,7 @@
 """
     __init__
 
-    A translator using the micrsoft translation engine documented here:
+    A translator using the microsoft translation engine documented here:
 
     http://msdn.microsoft.com/en-us/library/ff512419.aspx
 
